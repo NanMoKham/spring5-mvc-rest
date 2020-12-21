@@ -2,7 +2,7 @@ package guru.springfamework.services;
 
 import guru.springfamework.api.v1.model.CategoryDTO;
 import guru.springfamework.domain.Category;
-import guru.springfamework.mapper.CategoryMapper;
+import guru.springfamework.api.v1.model.mapper.CategoryMapper;
 import guru.springfamework.repositories.CategoryRepository;
 import org.junit.Before;
 import org.junit.Test;

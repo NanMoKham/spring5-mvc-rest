@@ -1,6 +1,7 @@
 package guru.springfamework.services;
 
 import guru.springfamework.api.v1.model.CustomerDTO;
+import guru.springfamework.controllers.v1.CustomerController;
 import guru.springfamework.controllers.v1.mapper.CustomerMapper;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CustomerReposity;
@@ -26,7 +27,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.custermToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl("api/v1/customers" + customer.getId());
+                    customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 } )
                 .collect(Collectors.toList());
@@ -48,7 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         CustomerDTO returnDTO = customerMapper.custermToCustomerDTO(saveCustomer);
 
-        returnDTO.setCustomerUrl("/api/v1/customers/" + saveCustomer.getId());
+        returnDTO.setCustomerUrl(getCustomerUrl(saveCustomer.getId()));
 
         return returnDTO;
     }
@@ -58,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         CustomerDTO returnDto = customerMapper.custermToCustomerDTO(savedCustomer);
 
-        returnDto.setCustomerUrl("/api/v1/customers/" + savedCustomer.getId());
+        returnDto.setCustomerUrl(getCustomerUrl(savedCustomer.getId()));
 
         return returnDto;
     }
@@ -85,7 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
 
             CustomerDTO returnDto = customerMapper.custermToCustomerDTO(customerReposity.save(customer));
 
-            returnDto.setCustomerUrl("/api/v1/customer/" + id);
+            returnDto.setCustomerUrl(getCustomerUrl(id));
 
             return returnDto;
 
@@ -96,4 +97,9 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomerById(Long id) {
         customerReposity.deleteById(id);
     }
+
+    private String getCustomerUrl(Long id) {
+        return CustomerController.BASE_URL + "/" + id;
+    }
+
 }

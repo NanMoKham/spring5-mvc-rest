@@ -16,8 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class CustomerServiceTest {
@@ -69,5 +68,27 @@ public class CustomerServiceTest {
         CustomerDTO customerDTO = customerService.getCustomerById(1L);
 
         assertEquals("John", customerDTO.getFirstName());
+    }
+
+    @Test
+    public void saveCustomerByDTO() throws Exception {
+
+        //given
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstName("Jim");
+
+        Customer savedCustomer = new Customer();
+        savedCustomer.setFirstName(customerDTO.getFirstName());
+        savedCustomer.setLastName(customerDTO.getLastName());
+        savedCustomer.setId(1l);
+
+        when(customerReposity.save(any(Customer.class))).thenReturn(savedCustomer);
+
+        //when
+        CustomerDTO savedDto = customerService.saveCustomerByDTO(1L, customerDTO);
+
+        //then
+        assertEquals(customerDTO.getFirstName(), savedDto.getFirstName());
+        assertEquals("/api/v1/customers/1", savedDto.getCustomerUrl());
     }
 }
